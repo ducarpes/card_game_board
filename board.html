@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabuleiro de Card Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #0B3954; /* Cor de fundo principal */
+            color: #BFD7EA; /* Cor do texto para contraste */
+        }
+
+        .board {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: rgba(191, 215, 234, 0.1); /* Fundo semi-transparente */
+            border-radius: 15px; /* Bordas arredondadas */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Sombra elegante */
+        }
+
+        .layout {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .player-top, .player-bottom {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .center-zone {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 60%;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin: 2px 0;
+        }
+
+        .card-slot {
+            width: 80px;
+            height: 120px;
+            border: 2px solid #087E8B; /* Borda com cor da paleta */
+            text-align: center;
+            line-height: 120px;
+            margin: 2px;
+            background: rgba(191, 215, 234, 0.1); /* Fundo semi-transparente */
+            border-radius: 10px; /* Bordas arredondadas */
+            transition: transform 0.2s, box-shadow 0.2s; /* Efeito de transição suave */
+            color: #BFD7EA; /* Cor do texto */
+        }
+
+        .card-slot:hover {
+            transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+            box-shadow: 0 5px 15px rgba(255, 90, 95, 0.3); /* Sombra ao passar o mouse */
+        }
+
+        /* Laterais do tabuleiro para cada jogador (esquerda e direita) */
+        .left-side, .right-side {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            width: 150px;
+        }
+
+        /* Estilos para os campos laterais (Deck, Extra Deck, Descarte) */
+        .card-slot.discard, .card-slot.deck, .card-slot.extra-deck {
+            background: linear-gradient(135deg, #087E8B, #0B3954); /* Gradiente moderno */
+            border: 2px solid #087E8B; /* Borda com cor da paleta */
+            text-align: center;
+            line-height: 120px;
+            width: 100px;
+            margin: 5px 0;
+            color: #BFD7EA; /* Cor do texto */
+            border-radius: 10px; /* Bordas arredondadas */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra elegante */
+        }
+
+        /* Separação entre os campos laterais e a zona central */
+        .left-side {
+            margin-right: 20px;
+        }
+
+        .right-side {
+            margin-left: 20px;
+        }
+
+        /* Ajustando os campos centrais para garantir alinhamento vertical */
+        .center-zone .row {
+            justify-content: space-around;
+        }
+
+        .center-zone .row:first-child {
+            width: 100%;
+        }
+
+        .center-zone .row:nth-child(2) {
+            width: 100%;
+        }
+
+        .center-zone .row:last-child {
+            width: 100%;
+        }
+
+        /* Estilos para a caixa central */
+        .central-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 60%;
+            margin: 20px 0;
+            background: rgba(191, 215, 234, 0.1); /* Fundo semi-transparente */
+            border-radius: 15px; /* Bordas arredondadas */
+            padding: 10px; /* Espaçamento interno */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Sombra elegante */
+        }
+
+        .central-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin: 2px 0;
+        }
+
+        .central-box .card-slot {
+            width: 80px;
+            height: 120px;
+            border: 2px solid #FF5A5F; /* Borda com cor da paleta */
+            text-align: center;
+            line-height: 120px;
+            margin: 2px;
+            background: linear-gradient(135deg, #FF5A5F, #C81D25); /* Gradiente suave */
+            border-radius: 10px; /* Bordas arredondadas */
+            color: #BFD7EA; /* Cor do texto */
+            transition: transform 0.2s, box-shadow 0.2s; /* Efeito de transição suave */
+        }
+
+        .central-box .card-slot:hover {
+            transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+            box-shadow: 0 5px 15px rgba(255, 90, 95, 0.5); /* Sombra ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+    <div class="board">
+        <!-- Jogador de cima -->
+        <div class="layout player-top">
+            <!-- Lado esquerdo do jogador de cima (Deck, Extra Deck, Descarte) -->
+            <div class="left-side">
+                <div class="card-slot deck">Deck</div> <!-- Campo de Deck -->
+                <div class="card-slot extra-deck">Extra Deck</div> <!-- Campo de Extra Deck -->
+                <div class="card-slot discard">Descarte</div> <!-- Campo de Descarte -->
+            </div>
+
+            <!-- Zona central superior -->
+            <div class="center-zone">
+                <div class="row">
+                    <div class="card-slot">Campo</div>
+                    <div class="card-slot">Campo</div>
+                    <div class="card-slot">Campo</div>
+                </div>
+                <div class="row">
+                    <div class="card-slot">Herói</div>
+                    <div class="card-slot">Herói</div>
+                    <div class="card-slot">Herói</div>
+                    <div class="card-slot">Herói</div>
+                </div>
+                <div class="row">
+                    <div class="card-slot">Monstro</div>
+                    <div class="card-slot">Monstro</div>
+                    <div class="card-slot">Monstro</div>
+                    <div class="card-slot">Monstro</div>
+                </div>
+            </div>
+
+            <!-- Lado direito do jogador de cima (vazio) -->
+            <div class="right-side"></div>
+        </div>
+
+        <!-- Caixa central com 6 campos (2 linhas de 3) -->
+        <div class="central-box">
+            <div class="central-row">
+                <div class="card-slot">Batalha</div>
+                <div class="card-slot">Batalha</div>
+                <div class="card-slot">Batalha</div>
+            </div>
+            <div class="central-row">
+                <div class="card-slot">Batalha</div>
+                <div class="card-slot">Batalha</div>
+                <div class="card-slot">Batalha</div>
+            </div>
+        </div>
+
+        <!-- Jogador de baixo -->
+        <div class="layout player-bottom">
+            <!-- Lado esquerdo do jogador de baixo (vazio) -->
+            <div class="left-side"></div>
+
+            <!-- Zona central inferior -->
+            <div class="center-zone">
+                <div class="row">
+                    <div class="card-slot">Monstro</div>
+                    <div class="card-slot">Monstro</div>
+                    <div class="card-slot">Monstro</div>
+                    <div class="card-slot">Monstro</div>
+                </div>
+                <div class="row">
+                    <div class="card-slot">Herói</div>
+                    <div class="card-slot">Herói</div>
+                    <div class="card-slot">Herói</div>
+                    <div class="card-slot">Herói</div>
+                </div>
+                <div class="row">
+                    <div class="card-slot">Campo</div>
+                    <div class="card-slot">Campo</div>
+                    <div class="card-slot">Campo</div>
+                </div>
+            </div>
+
+            <!-- Lado direito do jogador de baixo (Deck, Extra Deck, Descarte) -->
+            <div class="right-side">
+                <div class="card-slot discard">Descarte</div> <!-- Campo de Descarte -->
+                <div class="card-slot extra-deck">Extra Deck</div> <!-- Campo de Extra Deck -->
+                <div class="card-slot deck">Deck</div> <!-- Campo de Deck -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
